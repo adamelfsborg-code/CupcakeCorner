@@ -7,26 +7,26 @@
 
 import SwiftUI
 
+@Observable
+class User: Codable {
+    enum CodingKeys: String, CodingKey {
+        case _name = "name"
+    }
+    var name = "Adam"
+}
+
 
 struct ContentView: View {
-    @State private var username = ""
-    @State private var email = ""
-    
-    var disabledFrom: Bool {
-        username.count < 5 || email.count < 5
+    var body: some View {
+        VStack {
+            Button("Tap me", action: encodeMe)
+        }
     }
     
-    var body: some View {
-        Form {
-            Section {
-                TextField("Username", text: $username)
-                TextField("Email", text: $email)
-            }
-            Section {
-                Button("Create account") { }
-            }
-            .disabled(disabledFrom)
-        }
+    func encodeMe() {
+        let data = try! JSONEncoder().encode(User())
+        let str = String(decoding: data, as: UTF8.self)
+        print(str)
     }
     
   
